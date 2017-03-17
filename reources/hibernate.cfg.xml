@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+<session-factory>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11164259</property>
+    <property name="hibernate.connection.username">sql11164259</property>
+    <property name="hibernate.connection.password">rsfx4T5Rdl</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="show_sql">true</property>
+    <mapping class="com.mysage.stock.Stock" />
+    <mapping class="com.mysage.stock.StockDailyRecord" />
+</session-factory>
+</hibernate-configuration>
