@@ -41,9 +41,13 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 	public void save(Invoice entity) {
 		entity.setInvoiceNumber(lastInvoiceNumber.incrementAndGet());
 
-		invoiceDao.openCurrentSessionwithTransaction();
-		invoiceDao.save(entity);
-		invoiceDao.closeCurrentSessionwithTransaction();
+		try {
+			invoiceDao.openCurrentSessionwithTransaction();
+			invoiceDao.save(entity);
+			invoiceDao.closeCurrentSessionwithTransaction();
+		} catch (Exception e) {
+			lastInvoiceNumber.decrementAndGet();
+		}
 	}
 
 	public void updateToPaid(Integer number) {

@@ -1,116 +1,159 @@
 package com.mysage;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
-import com.mysage.services.StockService;
-import com.mysage.stock.Stock;
-import com.mysage.stock.StockDailyRecord;
+import javax.swing.plaf.InputMapUIResource;
+
+import com.mysage.entities.Customer;
+import com.mysage.entities.Invoice;
+import com.mysage.services.CustomerInvoiceService;
+import com.mysage.services.ICustomerInvoiceService;
 
 public class App {
+
+	private static final String EMPTY_STRING = "";
+
 	public static void main(String[] args) throws IOException {
 
-		clearScreen();		
-		
-		int menu=0;
-		
+		String codeCustomer;
 		do {
-			menu=AppMenu.SeeMenu();
-			
-			if (menu!=0) InsertItem();
-			
-		}while (menu!=0);
-				
-		System.out.println("Done");
+
+			codeCustomer = showLogin();
+			if (!codeCustomer.equalsIgnoreCase("exit")) {
+
+				ICustomerInvoiceService service = new CustomerInvoiceService();
+				Customer customer = service.findByCode(codeCustomer);
+
+				if (customer != null) {
+					int choiceMenu;
+					do {
+						choiceMenu = showMenu(customer);
+
+						switch (choiceMenu) {
+						case 1:
+							createCustomer(service);
+							break;
+						case 2:
+							customersList(service);
+							break;
+						case 3:
+							createInvoice(service);
+							break;
+						case 4:
+							payInvoice(service);
+							break;
+						case 5:
+							customerInvoices(service, customer);
+							break;
+						default:
+						}
+
+					} while (choiceMenu != 0);
+				}
+			}
+		} while (!codeCustomer.equalsIgnoreCase("exit"));
+
+		System.out.println("Exit...");
 	}
-	
-	
-	public static void InsertItem() throws IOException {
 
-		StockService stockService = new StockService();
-		
-		Stock st = stockService.findById(37);
-	
-		System.out.println(st);
-		System.out.println("Details....");
-				
-		for(StockDailyRecord sdr:st.getStockDailyRecords()){
-			System.out.println(sdr);
-		}
-		
-		
-/*
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Code stock");
-        String codeStock = br.readLine();
-        
-        System.out.print("Name stock");
-        String nameStock = br.readLine();
-  */      
-        /*
-        System.out.print("Enter Integer:");
-        try{
-            int i = Integer.parseInt(br.readLine());
-        }catch(NumberFormatException nfe){
-            System.err.println("Invalid Format!");
-        }
-        */
-		
-		/*
-        StockDao stockDao = new StockDao();
-        StockDailyRecordDao stockDailyRecordDao = new StockDailyRecordDao();
-		*/
-        
-        /*
-		Stock stock = new Stock();
-		stock.setStockCode(codeStock);
-		stock.setStockName(nameStock);
-		
-		
-		
-		stockDao.save(stock);
-		
-		stock.setStockCode(stock.getStockCode().concat("(U)"));
-		
-		stockDao.update(stock);
-		*/
-        
-		
-		/*
-		List<Stock> l = stockDao.findAll();
-		
-		for(Stock s:l){
-			System.out.println(s);
-		}
-		
-		System.out.println("-----");
-		
-		System.out.println(stockDao.findById(37));
-		
-		List<StockDailyRecord> ls = stockDailyRecordDao.findAll(37);
-		for(StockDailyRecord s:ls){
-			System.out.println(s);
-		}
-		*/
+	private static String showLogin() {
+		cls();
 
-/*
-		StockDailyRecord stockDailyRecords = new StockDailyRecord();
-		stockDailyRecords.setPriceOpen(new Float("1.2"));
-		stockDailyRecords.setPriceClose(new Float("1.1"));
-		stockDailyRecords.setPriceChange(new Float("10.0"));
-		stockDailyRecords.setVolume(3000000L);
-		stockDailyRecords.setDate(new Date());
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("--- Customer & Invoices Application (LOGIN) ---");
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++\n");
 
-		stockDailyRecords.setStock(stock);
-		stock.getStockDailyRecords().add(stockDailyRecords);
-
-		session.save(stockDailyRecords);
-
-		session.getTransaction().commit();		
-		*/
+		return inputText("Enter customer code ('exit' to exit application): ");
 	}
-	
-	public static void clearScreen() {  
-	    System.out.print("\033[H\033[2J");  
-	    System.out.flush();  
+
+	private static int showMenu(Customer customer) {
+		cls();
+
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("--- Customer & Invoices Application (MENU) ---");
+		System.out.println(customer.getCustomerCode().concat(" - ").concat(customer.getCustomerName()));
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++\n");
+		System.out.println("1) Create customers");
+		System.out.println("2) Customers list");
+		System.out.println("3) Create invoice");
+		System.out.println("4) Pay invoice");
+		System.out.println("5) Your invoices");
+		System.out.println("0) ...exit\n");
+
+		return inputInteger("Choice : ");
 	}
+
+	public static void createCustomer(ICustomerInvoiceService service) {
+		System.out.println("\n-- Create customers-- ");
+
+		String code = inputText("Code: ");
+		String name = inputText("Name: ");
+
+		service.save(new Customer(code, name));
+	}
+
+	private static void customersList(ICustomerInvoiceService service) {
+		System.out.println("\n-- Customers list -- ");
+
+		for (Customer c : service.findAll()) {
+			System.out.println(c);
+		}
+	}
+
+	private static void createInvoice(ICustomerInvoiceService service) {
+
+	}
+
+	private static void payInvoice(ICustomerInvoiceService service) {
+		System.out.println("\n-- Pay an invoice (change status) -- ");
+
+		Integer invoiceNumber = inputInteger("Invoice number: ");
+		service.updateToPaid(invoiceNumber);
+	}
+
+	private static void customerInvoices(ICustomerInvoiceService service, Customer customer) {
+		if ((customer.getInvoices() != null) && (customer.getInvoices().size() > 0)) {
+			for (Invoice invoice : customer.getInvoices()) {
+				System.out.println(invoice);
+			}
+			System.out.println("\nTotal amount = " + service.getInvoicesAmount(customer));
+			System.out.println("Number of invoices = " + customer.getInvoices().size());
+			System.out.println("Average amount = " + service.getInvoicesAmount(customer) / customer.getInvoices().size());
+		}
+		else {
+			System.out.println("Number of invoices = 0");
+		}
+	}
+
+	private static void cls() {
+		try {
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		} catch (Exception e) {
+		}
+	}
+
+	private static String inputText(String text) {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		try {
+			System.out.print(text);
+			return br.readLine();
+		} catch (IOException e) {
+			return EMPTY_STRING;
+		}
+	}
+
+	private static Integer inputInteger(String text) {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		try {
+			System.out.print(text);
+			return Integer.parseInt(br.readLine());
+		} catch (IOException e) {
+			return 0;
+		}
+	}
+
 }

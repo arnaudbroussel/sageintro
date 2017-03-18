@@ -3,6 +3,7 @@ package com;
 import java.util.List;
 
 import com.mysage.entities.Customer;
+import com.mysage.entities.Invoice;
 import com.mysage.services.CustomerInvoiceService;
 import com.mysage.services.ICustomerInvoiceService;
 
@@ -68,6 +69,9 @@ public class CustomerTest extends TestCase {
 		
 		for(Customer c:customers){
 			System.out.println(c);
+			for (Invoice i:c.getInvoices()){
+				System.out.println(i);
+			}
 		}
 		
 		assertTrue(true);
