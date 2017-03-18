@@ -11,12 +11,12 @@ public interface ICustomerInvoiceService {
 	public void save(Customer entity);	
 	public void save(Invoice entity);	
 
+	public void updateToPaid(Integer number);
+	
 	public Customer findByCode(String code);
 	public Invoice findByNumber(Integer number);
 	
 	public List<Customer> findAll();
-
-	public Invoice statusToPaid(Invoice entity);
 	
 	public Float getInvoicesAmount(Customer entity);
 	public Float getInvoicesAmount();

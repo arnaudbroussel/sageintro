@@ -95,7 +95,7 @@ public class Invoice implements java.io.Serializable {
 		this.description = description;
 	}
 
-	@Column(name = "INVOICE_STATUS", length = 1)
+	@Column(name = "INVOICE_PAID", length = 1)
 	public String getStatus() {
 		return status;
 	}

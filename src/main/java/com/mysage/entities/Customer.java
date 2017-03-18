@@ -63,11 +63,11 @@ public class Customer implements java.io.Serializable {
 	}
 
 	@Column(name = "CUSTOMER_NAME", unique = true, nullable = false, length = 200)
-	public String getStockName() {
+	public String getCustomerName() {
 		return this.customerName;
 	}
 
-	public void setStockName(String customerName) {
+	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
 
@@ -82,6 +82,6 @@ public class Customer implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Stock [customerId=" + customerId + ", customerCode=" + customerCode + ", customerName=" + customerName + "]";
+		return "Customer [customerId=" + customerId + ", customerCode=" + customerCode + ", customerName=" + customerName + "]";
 	}
 }

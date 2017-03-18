@@ -15,12 +15,12 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 	private static InvoiceDao invoiceDao;
 
 	private AtomicInteger lastInvoiceNumber;
-	
+
 	public CustomerInvoiceService() {
 		customerDao = new CustomerDao();
 		invoiceDao = new InvoiceDao();
-		
-		lastInvoiceNumber=new AtomicInteger();
+
+		lastInvoiceNumber = new AtomicInteger();
 		lastInvoiceNumber.set(this.getLastInvoiceNumber());
 	}
 
@@ -39,13 +39,20 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 	}
 
 	public void save(Invoice entity) {
+		entity.setInvoiceNumber(lastInvoiceNumber.incrementAndGet());
+
+		invoiceDao.openCurrentSessionwithTransaction();
+		invoiceDao.save(entity);
+		invoiceDao.closeCurrentSessionwithTransaction();
+	}
+
+	public void updateToPaid(Integer number) {
 		invoiceDao.openCurrentSessionwithTransaction();
 		
-		if (entity.getInvoiceId()==null){
-			entity.setInvoiceNumber(lastInvoiceNumber.incrementAndGet());
-		}
+		Invoice entity = invoiceDao.findByNumber(number);
+		entity.setStatus(InvoiceStatus.PAID.text());
 		
-		invoiceDao.save(entity);
+		invoiceDao.update(entity);
 		invoiceDao.closeCurrentSessionwithTransaction();
 	}
 
@@ -53,22 +60,31 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		return invoiceDao.findByNumber(number);
 	}
 
-	public Invoice statusToPaid(Invoice entity) {
+	public void statusToPaid(Invoice entity) {
 		entity.setStatus(InvoiceStatus.PAID.text());
-		return entity;
 	}
 
 	public Float getInvoicesAmount(Customer entity) {
-		// TODO Auto-generated method stub
-		return null;
+		float amount = 0;
+
+		for (Invoice i : entity.getInvoices()) {
+			amount = amount + i.getAmount();
+		}
+		return new Float(amount);
 	}
 
 	public Float getInvoicesAmount() {
-		// TODO Auto-generated method stub
-		return null;
+		float amount = 0;
+
+		List<Invoice> l = invoiceDao.findAll();
+		for (Invoice i : l) {
+			amount = amount + i.getAmount();
+		}
+		return new Float(amount);
 	}
 
-	private int getLastInvoiceNumber(){
-		return invoiceDao.getLastInvoiceNumber(); 
+	private int getLastInvoiceNumber() {
+		return invoiceDao.getLastInvoiceNumber();
 	}
+
 }

@@ -1,16 +1,12 @@
 package com;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import com.mysage.entities.Customer;
 import com.mysage.entities.Invoice;
 import com.mysage.services.CustomerInvoiceService;
 import com.mysage.services.ICustomerInvoiceService;
-import com.mysage.services.StockService;
-import com.mysage.stock.Stock;
-import com.mysage.stock.StockDailyRecord;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -37,76 +33,63 @@ public class InvoiceTest extends TestCase {
 		return new TestSuite(InvoiceTest.class);
 	}
 
-	/**
-	 * Rigourous Test :-)
-	 */
-	public void testApp() {
-		assertTrue(true);
-	}
-
-	public void testAdd() {
+	public void _testAdd() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
-		
-		boolean result=false;
-		
-		Customer customer = service.findByCode("C1");
-		
-		if (customer!=null){
 
-			Invoice invoice = new Invoice();
-			
-			Random random = new Random();			
-			invoice.setAmount(new Float(random.nextFloat() * (1000)));
-			
-			invoice.setCustomer(customer);
-			invoice.setDate(new Date());
-			invoice.setDescription("JUnit created invoice");
-			
-			invoice.setCustomer(customer);
-			customer.getInvoices().add(invoice);
-			
-			service.save(invoice);
-			
-			result=true;
+		boolean result = false;
+
+		Customer customer = service.findByCode("C1");
+
+		if (customer != null) {
+			for (int i = 0; i < 3; i++) {
+				Invoice invoice = new Invoice();
+
+				Random random = new Random();
+				invoice.setAmount(new Float(random.nextFloat() * (1000)));
+
+				invoice.setCustomer(customer);
+				invoice.setDate(new Date());
+				invoice.setDescription("JUnit created invoice");
+
+				invoice.setCustomer(customer);
+				customer.getInvoices().add(invoice);
+
+				service.save(invoice);
+			}
+			result = true;
 		}
 
 		assertTrue(result);
 	}
 
+	public void testAmounts() {
+		ICustomerInvoiceService service = new CustomerInvoiceService();
 
-	/*
-	 * public void testList() { StockService stockService = new StockService();
-	 * 
-	 * List<Stock> l = stockService.findAll();
-	 * 
-	 * assertTrue(l.size() > 0); }
-	 * 
-	 * public void testStock() { StockService stockService = new StockService();
-	 * 
-	 * Stock s = stockService.findById(37);
-	 * 
-	 * System.out.println(s); System.out.println("Details....");
-	 * 
-	 * for (StockDailyRecord sdr : s.getStockDailyRecords()) {
-	 * System.out.println(sdr); }
-	 * 
-	 * assertTrue(s != null); }
-	 * 
-	 * public void testStockDetailAdd() { StockService stockService = new
-	 * StockService();
-	 * 
-	 * Stock s = stockService.findById(37); StockDailyRecord stockDailyRecords =
-	 * new StockDailyRecord(); stockDailyRecords.setPriceOpen(new Float("1.2"));
-	 * stockDailyRecords.setPriceClose(new Float("1.1"));
-	 * stockDailyRecords.setPriceChange(new Float("10.0"));
-	 * stockDailyRecords.setVolume(123000L); stockDailyRecords.setDate(new
-	 * Date());
-	 * 
-	 * stockDailyRecords.setStock(s);
-	 * s.getStockDailyRecords().add(stockDailyRecords);
-	 * 
-	 * stockService.addDetail(stockDailyRecords);
-	 * 
-	 * assertTrue(stockDailyRecords != null); }
-	 */
+		Customer customer = service.findByCode("C1");
+
+		System.out.println("Total amount = " + service.getInvoicesAmount());
+		System.out.println(
+				"Total amount for customer " + customer.getCustomerName() + " = " + service.getInvoicesAmount(customer));
+
+		assertTrue(true);
+	}
+
+	public void testFindInvoice() {
+		ICustomerInvoiceService service = new CustomerInvoiceService();
+
+		Invoice invoice = service.findByNumber(3);
+
+		assertTrue(invoice != null);
+	}
+
+	public void testChangeStatus() {
+		ICustomerInvoiceService service = new CustomerInvoiceService();
+
+		service.updateToPaid(10);
+		service.updateToPaid(14);
+		
+		assertTrue(true);
+	}
+
+	
 }

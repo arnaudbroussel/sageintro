@@ -9,7 +9,7 @@ import com.mysage.entities.Customer;
 public class CustomerDao extends EntityDao<Customer> {
 
 	public void save(Customer entity) {
-		session.saveOrUpdate(entity);
+		session.save(entity);
 	}
 
 	public void update(Customer entity) {

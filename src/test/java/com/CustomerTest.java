@@ -1,14 +1,10 @@
 package com;
 
-import java.util.Date;
 import java.util.List;
 
 import com.mysage.entities.Customer;
 import com.mysage.services.CustomerInvoiceService;
 import com.mysage.services.ICustomerInvoiceService;
-import com.mysage.services.StockService;
-import com.mysage.stock.Stock;
-import com.mysage.stock.StockDailyRecord;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -35,23 +31,19 @@ public class CustomerTest extends TestCase {
 		return new TestSuite(CustomerTest.class);
 	}
 
-	/**
-	 * Rigourous Test :-)
-	 */
-	public void testApp() {
-		assertTrue(true);
-	}
 
-	public void _testAdd() {
+	public void testAdd() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
-		Customer customer = new Customer("C1", "ORACLE");
+		Customer customer = new Customer("C3", "EVIAN");
 
 		service.save(customer);
 
 		assertTrue(true);
 	}
 
+
+	
 	public void testFindCustomerOK() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
@@ -68,40 +60,17 @@ public class CustomerTest extends TestCase {
 		
 		assertTrue(customer == null);
 	}	
-	
-	/*
-	 * public void testList() { StockService stockService = new StockService();
-	 * 
-	 * List<Stock> l = stockService.findAll();
-	 * 
-	 * assertTrue(l.size() > 0); }
-	 * 
-	 * public void testStock() { StockService stockService = new StockService();
-	 * 
-	 * Stock s = stockService.findById(37);
-	 * 
-	 * System.out.println(s); System.out.println("Details....");
-	 * 
-	 * for (StockDailyRecord sdr : s.getStockDailyRecords()) {
-	 * System.out.println(sdr); }
-	 * 
-	 * assertTrue(s != null); }
-	 * 
-	 * public void testStockDetailAdd() { StockService stockService = new
-	 * StockService();
-	 * 
-	 * Stock s = stockService.findById(37); StockDailyRecord stockDailyRecords =
-	 * new StockDailyRecord(); stockDailyRecords.setPriceOpen(new Float("1.2"));
-	 * stockDailyRecords.setPriceClose(new Float("1.1"));
-	 * stockDailyRecords.setPriceChange(new Float("10.0"));
-	 * stockDailyRecords.setVolume(123000L); stockDailyRecords.setDate(new
-	 * Date());
-	 * 
-	 * stockDailyRecords.setStock(s);
-	 * s.getStockDailyRecords().add(stockDailyRecords);
-	 * 
-	 * stockService.addDetail(stockDailyRecords);
-	 * 
-	 * assertTrue(stockDailyRecords != null); }
-	 */
+
+	public void testFindAll() {
+		ICustomerInvoiceService service = new CustomerInvoiceService();
+
+		List<Customer> customers = service.findAll();
+		
+		for(Customer c:customers){
+			System.out.println(c);
+		}
+		
+		assertTrue(true);
+	}	
+
 }

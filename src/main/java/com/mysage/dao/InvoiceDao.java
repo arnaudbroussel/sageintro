@@ -11,7 +11,7 @@ import com.mysage.entities.Invoice;
 public class InvoiceDao extends EntityDao<Invoice> {
 
 	public void save(Invoice entity) {
-		session.saveOrUpdate(entity);
+		session.save(entity);
 	}
 
 	public void update(Invoice entity) {
@@ -39,8 +39,12 @@ public class InvoiceDao extends EntityDao<Invoice> {
 	}
 
 	public int getLastInvoiceNumber() {
-		Criteria criteria = session.createCriteria(Invoice.class).setProjection(Projections.max("invoiceNumber"));
-		return (Integer) criteria.uniqueResult();
+		try {
+			Criteria criteria = session.createCriteria(Invoice.class).setProjection(Projections.max("invoiceNumber"));
+			return (Integer) criteria.uniqueResult();
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 }
