@@ -11,7 +11,7 @@ public interface ICustomerInvoiceService {
 	public void save(Customer entity);	
 	public void save(Invoice entity);	
 
-	public void updateToPaid(Integer number);
+	public boolean updateToPaid(Integer number);
 	
 	public Customer findByCode(String code);
 	public Invoice findByNumber(Integer number);

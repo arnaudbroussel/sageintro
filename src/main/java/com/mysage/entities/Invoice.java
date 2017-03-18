@@ -36,11 +36,8 @@ public class Invoice implements java.io.Serializable {
 		this.status = InvoiceStatus.PENDING.text();
 	}
 
-	public Invoice(Integer invoiceId, Integer invoiceNumber, Customer customer, String description, Float amount,
-			Date date) {
+	public Invoice(Customer customer, String description, Float amount, Date date) {
 		this();
-		this.invoiceId = invoiceId;
-		this.invoiceNumber = invoiceNumber;
 		this.customer = customer;
 		this.description = description;
 		this.amount = amount;

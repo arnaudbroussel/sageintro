@@ -41,4 +41,8 @@ public abstract class EntityDao<T> implements Dao<T, Integer> {
 		session.close();
 	}
 
+	protected void openSession() {
+		if (!session.isOpen())
+			session = getSessionFactory().openSession();
+	}
 }

@@ -50,14 +50,21 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		}
 	}
 
-	public void updateToPaid(Integer number) {
+	public boolean updateToPaid(Integer number) {
+		boolean result=false;
+		
 		invoiceDao.openCurrentSessionwithTransaction();
-		
 		Invoice entity = invoiceDao.findByNumber(number);
-		entity.setStatus(InvoiceStatus.PAID.text());
-		
-		invoiceDao.update(entity);
+		if (entity!=null)
+		{
+			entity.setStatus(InvoiceStatus.PAID.text());
+			invoiceDao.update(entity);
+			
+			result=true;
+		}
 		invoiceDao.closeCurrentSessionwithTransaction();
+		
+		return result;
 	}
 
 	public Invoice findByNumber(Integer number) {

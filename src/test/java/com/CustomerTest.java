@@ -36,10 +36,16 @@ public class CustomerTest extends TestCase {
 	public void testAdd() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
-		Customer customer = new Customer("C3", "EVIAN");
+		Customer customer = new Customer("C4", "FNAC");
 
 		service.save(customer);
 
+		List<Customer> customers = service.findAll();
+		
+		for(Customer c:customers){
+			System.out.println(c);
+		}
+		
 		assertTrue(true);
 	}
 
