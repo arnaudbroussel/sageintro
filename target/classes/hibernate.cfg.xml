@@ -13,5 +13,7 @@
     <property name="show_sql">true</property>
     <mapping class="com.mysage.stock.Stock" />
     <mapping class="com.mysage.stock.StockDailyRecord" />
+    <mapping class="com.mysage.entities.Customer" />
+    <mapping class="com.mysage.entities.Invoice" />
 </session-factory>
 </hibernate-configuration>

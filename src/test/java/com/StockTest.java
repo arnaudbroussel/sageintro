@@ -3,7 +3,7 @@ package com;
 import java.util.Date;
 import java.util.List;
 
-import com.mysage.service.StockService;
+import com.mysage.services.StockService;
 import com.mysage.stock.Stock;
 import com.mysage.stock.StockDailyRecord;
 

@@ -2,7 +2,7 @@ package com.mysage;
 
 import java.io.IOException;
 
-import com.mysage.service.StockService;
+import com.mysage.services.StockService;
 import com.mysage.stock.Stock;
 import com.mysage.stock.StockDailyRecord;
 

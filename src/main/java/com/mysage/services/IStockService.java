@@ -1,4 +1,4 @@
-package com.mysage.service;
+package com.mysage.services;
 
 import java.util.List;
 
