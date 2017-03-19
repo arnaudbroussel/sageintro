@@ -1,6 +1,7 @@
 package com;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import com.mysage.entities.Customer;
@@ -91,5 +92,16 @@ public class InvoiceTest extends TestCase {
 		assertTrue(true);
 	}
 
+
+	public void testFindAll() {
+		ICustomerInvoiceService service = new CustomerInvoiceService();
+
+		List<Invoice> l =service.findAllInvoices();
+		for(Invoice i:l){
+			System.out.println(i.toPrettyString());
+		}
+		
+		assertTrue(true);
+	}
 	
 }

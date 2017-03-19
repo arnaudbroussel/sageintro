@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -48,6 +49,9 @@ public class App {
 						case 4:
 							customerInvoices(service, customer);
 							break;
+						case 5:
+							printAllInvoices(service);
+							break;
 						default:
 						}
 
@@ -60,24 +64,25 @@ public class App {
 	}
 
 	private static String showLogin(ICustomerInvoiceService service) {
-		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("\n+++++++++++++++++++++++++++++++++++++++++++++++");
 		System.out.println("--- Customer & Invoices Application (LOGIN) ---");
 		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++\n");
 
 		customersList(service);
 
-		return inputText("\nEnter customer code ('exit' to exit application): ");
+		return inputText("\nEnter customer code to access the menu ('exit' to exit application): ");
 	}
 
 	private static int showMenu(Customer customer) {
-		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++");
 		System.out.println("--- Customer & Invoices Application (MENU) ---");
 		System.out.println("User : " + customer.getCustomerCode().concat(" - ").concat(customer.getCustomerName()));
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++\n");
 		System.out.println("1) Create customer");
 		System.out.println("2) Create invoice");
-		System.out.println("3) Pay invoice");
-		System.out.println("4) List of invoices");
+		System.out.println("3) Pay an invoice");
+		System.out.println("4) List of invoices for "+customer.getCustomerName());
+		System.out.println("5) List of all the invoices");
 		System.out.println("0) ...exit\n");
 
 		return inputInteger("Choice : ");
@@ -96,7 +101,7 @@ public class App {
 		System.out.println("\n-- Customers list --");
 
 		for (Customer c : service.findAll()) {
-			System.out.println(c);
+			System.out.println(c.toPrettyString());
 		}
 	}
 
@@ -107,7 +112,10 @@ public class App {
 		String description = inputText("Description: ");
 		Float amount = inputFloat("Amount: ");
 
-		service.save(new Invoice(customer, description, amount, date));
+		Invoice invoice = new Invoice(customer, description, amount, date);
+
+		customer.getInvoices().add(invoice);
+		service.save(invoice);
 	}
 
 	private static void payInvoice(ICustomerInvoiceService service) {
@@ -122,9 +130,11 @@ public class App {
 	}
 
 	private static void customerInvoices(ICustomerInvoiceService service, Customer customer) {
+		System.out.println("\n-- Invoices for "+customer.getCustomerName()+" --");
+		
 		if ((customer.getInvoices() != null) && (customer.getInvoices().size() > 0)) {
 			for (Invoice invoice : customer.getInvoices()) {
-				System.out.println(invoice);
+				System.out.println(invoice.toPrettyString());
 			}
 			System.out.println("\nTotal amount = " + String.format("%.2f", service.getInvoicesAmount(customer)));
 			System.out.println("Number of invoices = " + customer.getInvoices().size());
@@ -136,6 +146,15 @@ public class App {
 		System.out.println();
 	}
 
+	private static void printAllInvoices(ICustomerInvoiceService service){
+		System.out.println("\n-- All invoices (ordered by correlative number) --");
+		
+		List<Invoice> l =service.findAllInvoices();
+		for(Invoice i:l){
+			System.out.println(i.toPrettyString());
+		}
+	}
+	
 	private static String inputText(String text) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -185,4 +204,5 @@ public class App {
 		}
 		return date;
 	}
+
 }

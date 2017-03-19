@@ -10,9 +10,7 @@
     <property name="hibernate.connection.username">sql11164259</property>
     <property name="hibernate.connection.password">rsfx4T5Rdl</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-    <property name="show_sql">true</property>
-    <mapping class="com.mysage.stock.Stock" />
-    <mapping class="com.mysage.stock.StockDailyRecord" />
+    <property name="show_sql">false</property>
     <mapping class="com.mysage.entities.Customer" />
     <mapping class="com.mysage.entities.Invoice" />
 </session-factory>

@@ -22,7 +22,6 @@ public class CustomerDao extends EntityDao<Customer> {
 
 	public Customer findByCode(String code) {
 		this.openSession();
-		
 		Query query = session.createQuery("from Customer where customerCode = :code ");
 		query.setParameter("code", code);
 		return (Customer) query.uniqueResult();
@@ -34,7 +33,6 @@ public class CustomerDao extends EntityDao<Customer> {
 
 	public List<Customer> findAll() {
 		this.openSession();
-		
 		@SuppressWarnings("unchecked")
 		List<Customer> l = (List<Customer>) session.createQuery("from Customer").list();
 		return l;

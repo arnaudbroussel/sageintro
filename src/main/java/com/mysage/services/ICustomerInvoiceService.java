@@ -17,6 +17,7 @@ public interface ICustomerInvoiceService {
 	public Invoice findByNumber(Integer number);
 	
 	public List<Customer> findAll();
+	public List<Invoice> findAllInvoices();
 	
 	public Float getInvoicesAmount(Customer entity);
 	public Float getInvoicesAmount();

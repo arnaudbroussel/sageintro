@@ -117,4 +117,10 @@ public class Invoice implements java.io.Serializable {
 				+ ", description=" + description + ", status=" + status + ", amount=" + amount + ", date=" + date + "]";
 	}
 
+	public String toPrettyString() {
+		return "Number=" + invoiceNumber + ", customer=" + customer.getCustomerName() + ", status=" + (status.equals(InvoiceStatus.PAID.text()) ? "PAID":"PENDING") + ", amount=" + amount + ", date=" + date;
+	}
+
+		
+	
 }

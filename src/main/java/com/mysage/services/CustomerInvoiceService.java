@@ -98,4 +98,8 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		return invoiceDao.getLastInvoiceNumber();
 	}
 
+	public List<Invoice> findAllInvoices() {
+		return invoiceDao.findAll();
+	}
+
 }

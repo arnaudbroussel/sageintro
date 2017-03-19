@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.mysage.enums.InvoiceStatus;
+
 @Entity
 @Table(name = "customer", catalog = "sql11164259", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "CUSTOMER_CODE") })
@@ -83,5 +85,9 @@ public class Customer implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", customerCode=" + customerCode + ", customerName=" + customerName + "]";
+	}
+	
+	public String toPrettyString() {
+		return "Code=" + customerCode + ", Name=" + customerName;
 	}
 }

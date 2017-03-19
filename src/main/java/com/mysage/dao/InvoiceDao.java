@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
 import com.mysage.entities.Invoice;
@@ -23,6 +24,7 @@ public class InvoiceDao extends EntityDao<Invoice> {
 	}
 
 	public Invoice findByNumber(Integer number) {
+		this.openSession();
 		Query query = session.createQuery("from Invoice where invoiceNumber = :invoiceNumber ");
 		query.setParameter("invoiceNumber", number);
 		return (Invoice) query.uniqueResult();
@@ -32,10 +34,18 @@ public class InvoiceDao extends EntityDao<Invoice> {
 		session.delete(entity);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Invoice> findAll() {
-		@SuppressWarnings("unchecked")
-		List<Invoice> l = (List<Invoice>) session.createQuery("from Invoice").list();
-		return l;
+		this.openSession();
+		//@SuppressWarnings("unchecked")
+		//List<Invoice> l = (List<Invoice>) session.createQuery("from Invoice").list();
+		
+		Criteria c = session.createCriteria(Invoice.class);
+		//c.createAlias("mother.kind", "motherKind");
+		c.addOrder(Order.asc("invoiceNumber"));
+		return c.list();
+		
+		//return l;
 	}
 
 	public int getLastInvoiceNumber() {
