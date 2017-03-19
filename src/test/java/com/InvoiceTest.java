@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.mysage.entities.Customer;
 import com.mysage.entities.Invoice;
+import com.mysage.enums.InvoiceStatus;
 import com.mysage.services.CustomerInvoiceService;
 import com.mysage.services.ICustomerInvoiceService;
 
@@ -34,7 +35,10 @@ public class InvoiceTest extends TestCase {
 		return new TestSuite(InvoiceTest.class);
 	}
 
-	public void _testAdd() {
+	/***
+	 * Get a customer and create a series of 3 invoices for it.
+	 */
+	public void testAdd() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
 		boolean result = false;
@@ -63,18 +67,25 @@ public class InvoiceTest extends TestCase {
 		assertTrue(result);
 	}
 
+	/***
+	 * Print out the total amount of the invoices
+	 * (always asserted)
+	 */
 	public void testAmounts() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
 		Customer customer = service.findByCode("C1");
 
 		System.out.println("Total amount = " + service.getInvoicesAmount());
-		System.out.println(
-				"Total amount for customer " + customer.getCustomerName() + " = " + service.getInvoicesAmount(customer));
+		System.out.println("Total amount for customer " + customer.getCustomerName() + " = "
+				+ service.getInvoicesAmount(customer));
 
 		assertTrue(true);
 	}
 
+	/***
+	 * Get a given given invoice from the DB
+	 */
 	public void testFindInvoice() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
@@ -83,25 +94,30 @@ public class InvoiceTest extends TestCase {
 		assertTrue(invoice != null);
 	}
 
+	/***
+	 * Change the status of a given invoice,
+	 * get the invoice from the DB and check if the status corresponds to PAID
+	 */
 	public void testChangeStatus() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
 		service.updateToPaid(10);
-		service.updateToPaid(14);
-		
-		assertTrue(true);
+		Invoice invoice = service.findByNumber(10);
+
+		assertTrue(invoice.getStatus().equals(InvoiceStatus.PAID.text()));
 	}
 
-
+	/***
+	 * List all the invoices of the DB
+	 */
 	public void testFindAll() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
-		List<Invoice> l =service.findAllInvoices();
-		for(Invoice i:l){
+		List<Invoice> l = service.findAllInvoices();
+		for (Invoice i : l) {
 			System.out.println(i.toPrettyString());
 		}
-		
 		assertTrue(true);
 	}
-	
+
 }

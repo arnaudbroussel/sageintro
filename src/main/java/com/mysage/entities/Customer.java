@@ -1,18 +1,18 @@
 package com.mysage.entities;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
-import com.mysage.enums.InvoiceStatus;
 
 @Entity
 @Table(name = "customer", catalog = "sql11164259", uniqueConstraints = {
@@ -38,11 +38,6 @@ public class Customer implements java.io.Serializable {
 		this.customerName = customerName;
 	}
 
-	public Customer(String customerCode, String customerName, Set<Invoice> invoices) {
-		this.customerCode = customerCode;
-		this.customerName = customerName;
-		this.invoices = invoices;
-	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -87,6 +82,10 @@ public class Customer implements java.io.Serializable {
 		return "Customer [customerId=" + customerId + ", customerCode=" + customerCode + ", customerName=" + customerName + "]";
 	}
 	
+	/***
+	 * 
+	 * @return An alternative to standard toString() method with a selection a columns.
+	 */	
 	public String toPrettyString() {
 		return "Code=" + customerCode + ", Name=" + customerName;
 	}

@@ -4,6 +4,16 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+/***
+ * 
+ * @author Arnaud Broussel
+ *
+ * This abstract is the base class of any entity with data access.
+ * A singleton mechanism is used to initialize the Hibernate framework.
+ *
+ * @param <T> Any type
+ * 
+ */
 public abstract class EntityDao<T> implements Dao<T, Integer> {
 
 	private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -12,10 +22,8 @@ public abstract class EntityDao<T> implements Dao<T, Integer> {
 
 	private static SessionFactory buildSessionFactory() {
 		try {
-			// Create the SessionFactory from hibernate.cfg.xml
 			return new Configuration().configure().buildSessionFactory();
 		} catch (Throwable ex) {
-			// Make sure you log the exception, as it might be swallowed
 			System.err.println("Initial SessionFactory creation failed." + ex);
 			throw new ExceptionInInitializerError(ex);
 		}
@@ -26,7 +34,6 @@ public abstract class EntityDao<T> implements Dao<T, Integer> {
 	}
 
 	protected void shutdown() {
-		// Close caches and connection pools
 		getSessionFactory().close();
 	}
 

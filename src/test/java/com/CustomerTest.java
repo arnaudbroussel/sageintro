@@ -33,6 +33,11 @@ public class CustomerTest extends TestCase {
 	}
 
 
+	/***
+	 * Create a customer
+	 * (always asserted -> the save() method should inform the result of the operation)
+	 * TODO : CRUD operations should return a result (OK / NOK)
+	 */
 	public void testAdd() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
@@ -40,7 +45,7 @@ public class CustomerTest extends TestCase {
 
 		service.save(customer);
 
-		List<Customer> customers = service.findAll();
+		List<Customer> customers = service.findAllCustomers();
 		
 		for(Customer c:customers){
 			System.out.println(c);
@@ -49,8 +54,9 @@ public class CustomerTest extends TestCase {
 		assertTrue(true);
 	}
 
-
-	
+	/***
+	 * Check that for an existing customer code, the customer is returned
+	 */
 	public void testFindCustomerOK() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
@@ -60,6 +66,9 @@ public class CustomerTest extends TestCase {
 		assertTrue(customer != null);
 	}
 
+	/***
+	 * Check that a wrong code for a customer return a null.
+	 */
 	public void testFindCustomerNOK() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
@@ -68,10 +77,14 @@ public class CustomerTest extends TestCase {
 		assertTrue(customer == null);
 	}	
 
+	/***
+	 * List all the customers and all the invoices for each.
+	 * (always asserted)
+	 */
 	public void testFindAll() {
 		ICustomerInvoiceService service = new CustomerInvoiceService();
 
-		List<Customer> customers = service.findAll();
+		List<Customer> customers = service.findAllCustomers();
 		
 		for(Customer c:customers){
 			System.out.println(c);

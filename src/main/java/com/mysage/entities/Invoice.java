@@ -32,6 +32,9 @@ public class Invoice implements java.io.Serializable {
 	private Float amount;
 	private Date date;
 
+	/***
+	 * An invoice is constructed with the PENDING status by default.
+	 */
 	public Invoice() {
 		this.status = InvoiceStatus.PENDING.text();
 	}
@@ -117,6 +120,10 @@ public class Invoice implements java.io.Serializable {
 				+ ", description=" + description + ", status=" + status + ", amount=" + amount + ", date=" + date + "]";
 	}
 
+	/***
+	 * 
+	 * @return An alternative to standard toString() method with a selection a columns.
+	 */
 	public String toPrettyString() {
 		return "Number=" + invoiceNumber + ", customer=" + customer.getCustomerName() + ", status=" + (status.equals(InvoiceStatus.PAID.text()) ? "PAID":"PENDING") + ", amount=" + amount + ", date=" + date;
 	}

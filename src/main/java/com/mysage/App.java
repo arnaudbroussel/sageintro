@@ -16,6 +16,13 @@ import com.mysage.entities.Invoice;
 import com.mysage.services.CustomerInvoiceService;
 import com.mysage.services.ICustomerInvoiceService;
 
+/***
+ * 
+ * @author Arnaud Broussel
+ *
+ * Menu of the application.
+ * Each option proposes an action offered by the ICustomerInvoiceService interface.
+ */
 public class App {
 
 	private static final String EMPTY_STRING = "";
@@ -100,7 +107,7 @@ public class App {
 	private static void customersList(ICustomerInvoiceService service) {
 		System.out.println("\n-- Customers list --");
 
-		for (Customer c : service.findAll()) {
+		for (Customer c : service.findAllCustomers()) {
 			System.out.println(c.toPrettyString());
 		}
 	}

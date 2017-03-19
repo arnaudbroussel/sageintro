@@ -9,6 +9,14 @@ import com.mysage.entities.Customer;
 import com.mysage.entities.Invoice;
 import com.mysage.enums.InvoiceStatus;
 
+/***
+ * 
+ * Set of business operations expected for Customer and Invoices.
+ * Some of these operations are transactional (save and update).
+ * 
+ * @author Arnaud Broussel
+ *
+ */
 public class CustomerInvoiceService implements ICustomerInvoiceService {
 
 	private static CustomerDao customerDao;
@@ -34,7 +42,7 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		return customerDao.findByCode(code);
 	}
 
-	public List<Customer> findAll() {
+	public List<Customer> findAllCustomers() {
 		return customerDao.findAll();
 	}
 
@@ -50,6 +58,9 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		}
 	}
 
+	/***
+	 * Change the status of an invoice to set it to Paid.
+	 */
 	public boolean updateToPaid(Integer number) {
 		boolean result=false;
 		
@@ -71,10 +82,9 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		return invoiceDao.findByNumber(number);
 	}
 
-	public void statusToPaid(Invoice entity) {
-		entity.setStatus(InvoiceStatus.PAID.text());
-	}
-
+	/***
+	 * Get the total amount of all the invoices in the DB for the customer indicated.
+	 */
 	public Float getInvoicesAmount(Customer entity) {
 		float amount = 0;
 
@@ -84,6 +94,9 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		return new Float(amount);
 	}
 
+	/***
+	 * Get the total amount of all the invoices in the DB.
+	 */
 	public Float getInvoicesAmount() {
 		float amount = 0;
 
@@ -94,6 +107,11 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 		return new Float(amount);
 	}
 
+	/***
+	 * This method must be called only once (in constructor).
+	 * 
+	 * @return The last invoice number registered in the DB
+	 */
 	private int getLastInvoiceNumber() {
 		return invoiceDao.getLastInvoiceNumber();
 	}
