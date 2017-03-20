@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
  * @author Arnaud Broussel
  *
  * This abstract is the base class of any entity with data access.
- * A singleton mechanism is used to initialize the Hibernate framework.
+ * A class variable is used to initialize the Hibernate framework.
  *
  * @param <T> Any type
  * 

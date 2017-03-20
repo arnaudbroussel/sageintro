@@ -22,6 +22,7 @@ public class CustomerInvoiceService implements ICustomerInvoiceService {
 	private static CustomerDao customerDao;
 	private static InvoiceDao invoiceDao;
 
+	// used to securely increment correlatively the invoice number
 	private AtomicInteger lastInvoiceNumber;
 
 	public CustomerInvoiceService() {
